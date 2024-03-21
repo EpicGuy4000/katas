@@ -4,12 +4,12 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class Money {
-    public val amount: BigDecimal;
-    public fun getAmount(): Double = amount.setScale(2, RoundingMode.HALF_EVEN).toDouble()
+    private val amount: BigDecimal
+    fun getAmount(): Double = amount.setScale(2, RoundingMode.HALF_EVEN).toDouble()
     constructor(amount: Double) {
         this.amount = amount.toBigDecimal()
     }
-    constructor(amount: BigDecimal) {
+    private constructor(amount: BigDecimal) {
         this.amount = amount
     }
 
