@@ -1,4 +1,4 @@
-package org.example.kata
+package org.kata
 
 /**
  * There is a bus moving in the city which takes and drops some people at each bus stop.

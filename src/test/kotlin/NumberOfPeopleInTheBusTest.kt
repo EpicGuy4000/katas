@@ -1,6 +1,4 @@
-package kata
-
-import org.example.kata.NumberOfPeopleInTheBus
+import org.kata.NumberOfPeopleInTheBus
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

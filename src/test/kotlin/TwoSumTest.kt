@@ -1,6 +1,4 @@
-package kata
-
-import org.example.kata.TwoSum
+import org.kata.TwoSum
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

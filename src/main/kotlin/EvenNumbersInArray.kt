@@ -1,4 +1,4 @@
-package org.example.kata
+package org.kata
 
 /**
  * Given an array of numbers, return a new array of length `number` containing the last even numbers

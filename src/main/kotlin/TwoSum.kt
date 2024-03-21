@@ -1,4 +1,4 @@
-package org.example.kata
+package org.kata
 
 /**
  * Write a function that takes an array of numbers (integers for the tests) and a target number.

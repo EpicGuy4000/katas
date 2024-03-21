@@ -1,6 +1,4 @@
-package kata
-
-import org.example.kata.EvenNumbersInArray
+import org.kata.EvenNumbersInArray
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
