@@ -17,4 +17,6 @@ class Money {
     operator fun div(other: Money): Money = Money(amount / other.amount)
     operator fun minus(other: Money): Money = Money(amount - other.amount)
     operator fun plus(other: Money): Money = Money(amount + other.amount)
+    operator fun minus(other: Double): Money = Money(amount - Money(other).amount)
+    operator fun plus(other: Double): Money = Money(amount + Money(other).amount)
 }

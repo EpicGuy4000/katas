@@ -18,8 +18,8 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 20.0).getReceipt()
-        assertEquals(20.25, receipt.priceBeforeTax)
-        assertEquals(24.30, receipt.priceAfterTax)
+        assertEquals(20.25, receipt.price)
+        assertEquals(24.30, receipt.total)
     }
 
     @Test
@@ -27,7 +27,18 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 21.0).getReceipt()
-        assertEquals(20.25, receipt.priceBeforeTax)
-        assertEquals(24.50, receipt.priceAfterTax)
+        assertEquals(20.25, receipt.price)
+        assertEquals(24.50, receipt.total)
+    }
+
+    @Test
+    fun discount() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, 15.0).getReceipt()
+        assertEquals(4.05, receipt.taxAmount)
+        assertEquals(3.04, receipt.discountAmount)
+        assertEquals(20.25, receipt.price)
+        assertEquals(21.26, receipt.total)
     }
 }
