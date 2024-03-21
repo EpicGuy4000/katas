@@ -1,18 +1,10 @@
-package price_calculator
+package org.kata.price_calculator
 
-import org.kata.price_calculator.Product
-import org.kata.price_calculator.Register
-import org.junit.jupiter.api.BeforeEach
-import org.kata.price_calculator.Money
-
+import org.junit.jupiter.api.Assertions.*
+import org.kata.org.kata.price_calculator.*
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class RegisterTest {
-    @BeforeEach
-    fun setUp() {
-    }
-
     @Test
     fun tax_case1() {
         val product = Product("The Little Prince", 12345, Money(20.25))
@@ -36,7 +28,9 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 20.0).apply {
-            discountPercentage = 15.0
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+            }
         }.getReceipt()
         assertEquals(4.05, receipt.taxAmount)
         assertEquals(3.04, receipt.discountAmount)
@@ -49,7 +43,9 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 20.0).apply {
-            discountPercentage = 15.0
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+            }
         }.getReceipt()
 
         val printed = receipt.print()
@@ -74,9 +70,10 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 20.0).apply {
-            discountPercentage = 15.0
-            upcDiscountPercentage = 7.0
-            upc = 12345
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
         }.getReceipt()
 
         assertEquals(20.25, receipt.price)
@@ -90,14 +87,32 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 21.0).apply {
-            discountPercentage = 15.0
-            upcDiscountPercentage = 7.0
-            upc = 789
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 789, DiscountApplicability.AFTER_TAX))
+            }
         }.getReceipt()
 
         assertEquals(20.25, receipt.price)
         assertEquals(4.25, receipt.taxAmount)
         assertEquals(3.04, receipt.discountAmount)
         assertEquals(21.46, receipt.total)
+    }
+
+    @Test
+    fun precedence() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 20.0).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.BEFORE_TAX))
+            }
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.price)
+        assertEquals(3.77, receipt.taxAmount)
+        assertEquals(4.24, receipt.discountAmount)
+        assertEquals(19.78, receipt.total)
     }
 }

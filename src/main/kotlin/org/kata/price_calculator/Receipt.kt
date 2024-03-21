@@ -1,4 +1,4 @@
-package org.kata.price_calculator
+package org.kata.org.kata.price_calculator
 
 class Receipt {
     companion object {
