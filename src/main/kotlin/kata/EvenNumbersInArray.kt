@@ -6,5 +6,7 @@ package org.example.kata
  * The original array will be not empty and will contain at least "number" even numbers.
  */
 class EvenNumbersInArray {
-    fun evenNumbers(array: List<Int>, number: Int): List<Int> = array.filter { it % 2 == 0 }.takeLast(number)
+    companion object {
+        fun evenNumbers(array: List<Int>, number: Int): List<Int> = array.filter { it % 2 == 0 }.takeLast(number)
+    }
 }

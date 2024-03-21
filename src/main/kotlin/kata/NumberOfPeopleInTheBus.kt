@@ -19,5 +19,7 @@ package org.example.kata
  * The second value in the first pair in the array is 0, since the bus is empty in the first bus stop.
  */
 class NumberOfPeopleInTheBus {
-    fun people(busStops: Array<Pair<Int, Int>>) : Int = busStops.sumOf { it.first - it.second }
+    companion object {
+        fun people(busStops: Array<Pair<Int, Int>>) : Int = busStops.sumOf { it.first - it.second }
+    }
 }
