@@ -299,4 +299,26 @@ class RegisterTest {
         assertContains(receipt, "TAX: 3.55 GBP")
         assertContains(receipt, "TOTAL: 21.31 GBP")
     }
+
+    @Test
+    fun precision() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.MULTIPLICATIVE).apply {
+            moneyFormatter = CurrencyFormatter("USD")
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            expenses.apply {
+                add(PercentageExpense("Transport", 3.0))
+            }
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.24, receipt.discountAmount)
+        assertEquals(0.61, receipt.expenses["Transport"])
+        assertEquals(20.87, receipt.total)
+    }
 }
