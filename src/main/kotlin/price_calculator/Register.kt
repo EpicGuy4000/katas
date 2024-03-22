@@ -5,6 +5,7 @@ class Register(
     private val taxPercentage: Double,
     private val combining: DiscountCombining = DiscountCombining.ADDITIVE
 ) {
+    var moneyFormatter: MoneyFormatter = DefaultMoneyFormatter()
     var discountCap: DiscountCap = NoCap()
     val discounts: MutableList<Discount> = mutableListOf()
     val expenses: MutableList<Expense> = mutableListOf()
@@ -12,7 +13,7 @@ class Register(
     fun getReceipt(): Receipt {
         val register = this
 
-        return Receipt().apply {
+        return Receipt(moneyFormatter).apply {
             cost = product.price.getAmount()
 
             val discountAmountBeforeTax = discountCap.applyCap(product.price, applyDiscounts(product.price, discounts.filter { it.applicability == DiscountApplicability.BEFORE_TAX }))

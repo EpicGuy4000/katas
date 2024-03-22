@@ -273,4 +273,30 @@ class RegisterTest {
         assertEquals(4.46, receipt.discountAmount)
         assertEquals(20.04, receipt.total)
     }
+
+    @Test
+    fun currency_case1() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 20.0).apply {
+            moneyFormatter = CurrencyFormatter("USD")
+        }.getReceipt().print()
+
+        assertContains(receipt, "COST: 20.25 USD")
+        assertContains(receipt, "TAX: 4.05 USD")
+        assertContains(receipt, "TOTAL: 24.30 USD")
+    }
+
+    @Test
+    fun currency_case2() {
+        val product = Product("The Little Prince", 12345, Money(17.76))
+
+        val receipt = Register(product, 20.0).apply {
+            moneyFormatter = CurrencyFormatter("GBP")
+        }.getReceipt().print()
+
+        assertContains(receipt, "COST: 17.76 GBP")
+        assertContains(receipt, "TAX: 3.55 GBP")
+        assertContains(receipt, "TOTAL: 21.31 GBP")
+    }
 }

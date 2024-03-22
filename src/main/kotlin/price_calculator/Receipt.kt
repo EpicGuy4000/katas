@@ -1,9 +1,7 @@
 package org.kata.price_calculator
 
-class Receipt {
-    companion object {
-        fun printMoney(number: Double) = "\$%.2f".format(number)
-    }
+class Receipt(private val moneyFormatter: MoneyFormatter) {
+    private fun printMoney(number: Double) = moneyFormatter.format(number)
 
     fun print(): String {
         return "COST: ${printMoney(cost)}" +
