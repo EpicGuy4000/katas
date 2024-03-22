@@ -3,6 +3,7 @@ package org.kata.price_calculator
 import org.junit.jupiter.api.Assertions.*
 import org.kata.org.kata.price_calculator.*
 import kotlin.test.Test
+import kotlin.test.assertContains
 
 class RegisterTest {
     @Test
@@ -10,7 +11,7 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 20.0).getReceipt()
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(24.30, receipt.total)
     }
 
@@ -19,7 +20,7 @@ class RegisterTest {
         val product = Product("The Little Prince", 12345, Money(20.25))
 
         val receipt = Register(product, 21.0).getReceipt()
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(24.50, receipt.total)
     }
 
@@ -34,7 +35,7 @@ class RegisterTest {
         }.getReceipt()
         assertEquals(4.05, receipt.taxAmount)
         assertEquals(3.04, receipt.discountAmount)
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(21.26, receipt.total)
     }
 
@@ -50,8 +51,8 @@ class RegisterTest {
 
         val printed = receipt.print()
 
-        assertEquals("TOTAL: $21.26\n" +
-                "DISCOUNT: $3.04", printed)
+        assertContains(printed, "TOTAL: $21.26")
+        assertContains(printed, "DISCOUNT: $3.04")
     }
 
     @Test
@@ -62,7 +63,7 @@ class RegisterTest {
 
         val printed = receipt.print()
 
-        assertEquals("TOTAL: $24.30", printed)
+        assertContains(printed, "TOTAL: $24.30")
     }
 
     @Test
@@ -76,7 +77,7 @@ class RegisterTest {
             }
         }.getReceipt()
 
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(4.05, receipt.taxAmount)
         assertEquals(4.46, receipt.discountAmount)
         assertEquals(19.84, receipt.total)
@@ -93,7 +94,7 @@ class RegisterTest {
             }
         }.getReceipt()
 
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(4.25, receipt.taxAmount)
         assertEquals(3.04, receipt.discountAmount)
         assertEquals(21.46, receipt.total)
@@ -110,9 +111,66 @@ class RegisterTest {
             }
         }.getReceipt()
 
-        assertEquals(20.25, receipt.price)
+        assertEquals(20.25, receipt.cost)
         assertEquals(3.77, receipt.taxAmount)
         assertEquals(4.24, receipt.discountAmount)
         assertEquals(19.78, receipt.total)
+    }
+
+    @Test
+    fun expenses_case1() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            expenses.apply {
+                add(PercentageExpense("Packaging", 1.0))
+                add(FlatExpense("Transport", 2.2))
+            }
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.46, receipt.discountAmount)
+        assertEquals(0.20, receipt.expenses["Packaging"])
+        assertEquals(2.20, receipt.expenses["Transport"])
+        assertEquals(22.44, receipt.total)
+    }
+
+    @Test
+    fun expenses_case1_print() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            expenses.apply {
+                add(PercentageExpense("Packaging", 1.0))
+                add(FlatExpense("Transport", 2.2))
+            }
+        }.getReceipt().print()
+
+        assertContains(receipt, "COST: $20.25")
+        assertContains(receipt, "TAX: $4.25")
+        assertContains(receipt, "DISCOUNT: $4.46")
+        assertContains(receipt, "Packaging: $0.20")
+        assertContains(receipt, "Transport: $2.20")
+        assertContains(receipt, "TOTAL: $22.44")
+    }
+
+    @Test
+    fun expenses_case2() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0).getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(24.5, receipt.total)
     }
 }
