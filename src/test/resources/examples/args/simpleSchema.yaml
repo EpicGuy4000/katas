@@ -1,0 +1,10 @@
+args:
+  l:
+    description: Logging
+    type: flag
+  p:
+    description: Port
+    type: int
+  d:
+    description: Directory
+    type: string

@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.yaml:snakeyaml:2.2")
 }
 
 tasks.test {
