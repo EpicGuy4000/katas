@@ -1,7 +1,7 @@
-package org.kata.price_calculator
+package price_calculator
 
 import org.junit.jupiter.api.Assertions.*
-import org.kata.org.kata.price_calculator.*
+import org.kata.price_calculator.*
 import kotlin.test.Test
 import kotlin.test.assertContains
 
@@ -218,5 +218,59 @@ class RegisterTest {
         assertEquals(0.20, receipt.expenses["Packaging"])
         assertEquals(2.20, receipt.expenses["Transport"])
         assertEquals(22.66, receipt.total)
+    }
+
+    @Test
+    fun cap_case1() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.ADDITIVE).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            discountCap = PercentageCap(20.0)
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.05, receipt.discountAmount)
+        assertEquals(20.45, receipt.total)
+    }
+
+    @Test
+    fun cap_case2() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.ADDITIVE).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            discountCap = FlatCap(4.0)
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.00, receipt.discountAmount)
+        assertEquals(20.50, receipt.total)
+    }
+
+    @Test
+    fun cap_case3() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.ADDITIVE).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            discountCap = PercentageCap(30.0)
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.46, receipt.discountAmount)
+        assertEquals(20.04, receipt.total)
     }
 }

@@ -1,13 +1,11 @@
-package org.kata.org.kata.price_calculator
-
-import org.kata.price_calculator.Expense
-import org.kata.price_calculator.Money
+package org.kata.price_calculator
 
 class Register(
     private val product: Product,
     private val taxPercentage: Double,
     private val combining: DiscountCombining = DiscountCombining.ADDITIVE
 ) {
+    var discountCap: DiscountCap = NoCap()
     val discounts: MutableList<Discount> = mutableListOf()
     val expenses: MutableList<Expense> = mutableListOf()
 
@@ -17,7 +15,7 @@ class Register(
         return Receipt().apply {
             cost = product.price.getAmount()
 
-            val discountAmountBeforeTax = applyDiscounts(product.price, discounts.filter { it.applicability == DiscountApplicability.BEFORE_TAX })
+            val discountAmountBeforeTax = discountCap.applyCap(product.price, applyDiscounts(product.price, discounts.filter { it.applicability == DiscountApplicability.BEFORE_TAX }))
 
             val priceAfterPreTaxDiscount = product.price - discountAmountBeforeTax
 
@@ -25,7 +23,7 @@ class Register(
 
             val discountAmountAfterTax = applyDiscounts(priceAfterPreTaxDiscount, discounts.filter { it.applicability == DiscountApplicability.AFTER_TAX })
 
-            discountAmount = (discountAmountBeforeTax + discountAmountAfterTax).getAmount()
+            discountAmount = discountCap.applyCap(product.price, discountAmountBeforeTax + discountAmountAfterTax).getAmount()
             expenses.apply {
                 for (expense in register.expenses) {
                     put(expense.name, expense.getAmount(product.price))
