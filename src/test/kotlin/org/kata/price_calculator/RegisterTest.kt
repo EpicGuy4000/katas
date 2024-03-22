@@ -173,4 +173,50 @@ class RegisterTest {
         assertEquals(4.25, receipt.taxAmount)
         assertEquals(24.5, receipt.total)
     }
+
+    @Test
+    fun combining_case1() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.ADDITIVE).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            expenses.apply {
+                add(PercentageExpense("Packaging", 1.0))
+                add(FlatExpense("Transport", 2.2))
+            }
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.46, receipt.discountAmount)
+        assertEquals(0.20, receipt.expenses["Packaging"])
+        assertEquals(2.20, receipt.expenses["Transport"])
+        assertEquals(22.44, receipt.total)
+    }
+
+    @Test
+    fun combining_case2() {
+        val product = Product("The Little Prince", 12345, Money(20.25))
+
+        val receipt = Register(product, 21.0, DiscountCombining.MULTIPLICATIVE).apply {
+            discounts.apply {
+                add(UniversalDiscount(15.0, DiscountApplicability.AFTER_TAX))
+                add(UpcDiscount(7.0, 12345, DiscountApplicability.AFTER_TAX))
+            }
+            expenses.apply {
+                add(PercentageExpense("Packaging", 1.0))
+                add(FlatExpense("Transport", 2.2))
+            }
+        }.getReceipt()
+
+        assertEquals(20.25, receipt.cost)
+        assertEquals(4.25, receipt.taxAmount)
+        assertEquals(4.24, receipt.discountAmount)
+        assertEquals(0.20, receipt.expenses["Packaging"])
+        assertEquals(2.20, receipt.expenses["Transport"])
+        assertEquals(22.66, receipt.total)
+    }
 }
