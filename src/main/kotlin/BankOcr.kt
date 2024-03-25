@@ -1,11 +1,9 @@
 package org.kata
 
-typealias AccountNumber = String
-
 class BankOcr {
     companion object {
         fun scan(lines: List<String>): AccountNumber {
-            if (lines.isEmpty()) return ""
+            if (lines.isEmpty()) return AccountNumber("")
 
             val digits: MutableList<String> = mutableListOf()
             for (i in 0..<lines[0].length.div(3)) {
@@ -16,7 +14,7 @@ class BankOcr {
                 digits.add(DigitMapper.map[digitAsString]!!)
             }
 
-            return digits.joinToString("")
+            return AccountNumber(digits.joinToString(""))
         }
     }
 }
