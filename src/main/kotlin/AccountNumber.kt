@@ -9,4 +9,7 @@ data class AccountNumber(val number: String) {
 
         return checksum % 11 == 0
     }
+
+    fun isIllegible(): Boolean = number.any { it == '?' }
+    fun print(): String = "$number${if(isIllegible()) " ILL" else if (!validateChecksum()) " ERR" else ""}"
 }

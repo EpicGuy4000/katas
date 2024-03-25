@@ -10,8 +10,7 @@ class BankOcr {
                 val digitAsString = List(3) {
                     lines[it].substring((i * 3)..(i * 3 + 2))
                 }.joinToString("\n")
-                println("Trying to map $digitAsString")
-                digits.add(DigitMapper.map[digitAsString]!!)
+                digits.add(DigitMapper.map[digitAsString] ?: "?")
             }
 
             return AccountNumber(digits.joinToString(""))
