@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.kata.MultiplicationTable
@@ -15,3 +15,4 @@ class MultiplicationTableTest {
         }
     }
 }
+
