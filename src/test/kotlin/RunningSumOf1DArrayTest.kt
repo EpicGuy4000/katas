@@ -2,11 +2,10 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.kata.RunningSumOf1DArray
-import org.kata.SumConsecutiveNumbers
 
 class RunningSumOf1DArrayTest {
     @TestFactory
-    fun runningSUm() = listOf(
+    fun runningSum() = listOf(
         listOf(2, 3, 5, 1, 6) to listOf(2, 5, 10, 11, 17),
         listOf(1, 1, 1, 1, 1) to listOf(1, 2, 3, 4, 5),
         listOf(-1, 2, -3, 4, -5) to listOf(-1, 1, -2, 2, -3)
