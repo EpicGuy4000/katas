@@ -1,8 +1,7 @@
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.kata.FindTheHighestAltitude
-import org.kata.RunningSumOf1DArray
 
 class FindTheHighestAltitudeTest {
     @TestFactory
