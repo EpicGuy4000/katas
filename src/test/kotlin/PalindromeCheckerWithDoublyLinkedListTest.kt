@@ -14,7 +14,7 @@ class PalindromeCheckerWithDoublyLinkedListTest {
         Node.fromList(listOf(1)) to true,
         Node.fromList(emptyList()) to true,
     ).map { (input, expected) ->
-        DynamicTest.dynamicTest("Checks if ${input?.printAfter()} is a palindrome") {
+        DynamicTest.dynamicTest("Checks if ${input?.print()} is a palindrome") {
             val output = PalindromeCheckerWithDoublyLinkedList.isPalindrome(input)
             Assertions.assertEquals(expected, output)
         }

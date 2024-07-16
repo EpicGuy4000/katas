@@ -20,7 +20,7 @@ data class DoublyLinkedListNode(
         }
     }
 
-    fun printAfter(): List<Int> {
+    fun print(): List<Int> {
         return buildList {
             var curr: DoublyLinkedListNode? = this@DoublyLinkedListNode
             while (curr != null) {

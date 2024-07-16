@@ -10,7 +10,7 @@ class MergeSortedLinkedListTest {
         Pair(Node(1, Node(3, Node(5))), Node(2, Node(4, Node(6))))
                 to Node(1, Node(2, Node(3, Node(4, Node(5, Node(6)))))),
     ).map { (input, expected) ->
-        DynamicTest.dynamicTest("Merges linked lists ${input.first.printRest()} and ${input.second.printRest()} to ${expected.printRest()}") {
+        DynamicTest.dynamicTest("Merges linked lists ${input.first.print()} and ${input.second.print()} to ${expected.print()}") {
             val output = MergeSortedLinkedList.merge(input.first, input.second)
             Assertions.assertEquals(expected, output)
         }

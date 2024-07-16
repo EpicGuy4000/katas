@@ -17,7 +17,7 @@ class RemoveDuplicatesFromLinkedListTest {
         ) to SingleLinkedListNode(1, SingleLinkedListNode(2, SingleLinkedListNode(3))),
         SingleLinkedListNode(3, SingleLinkedListNode(3, SingleLinkedListNode(3))) to SingleLinkedListNode(3),
     ).map { (input, expected) ->
-        DynamicTest.dynamicTest("Removes duplicates from linked list ${input.printRest()}") {
+        DynamicTest.dynamicTest("Removes duplicates from linked list ${input.print()}") {
             val output = RemoveDuplicatesFromLinkedList.removeDuplicates(input)
             Assertions.assertEquals(expected, output)
         }

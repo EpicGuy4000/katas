@@ -13,7 +13,7 @@ class ReverseLinkedListTest {
         Node(-1, Node(0, Node(1))) to
                 Node(1, Node(0, Node(-1))),
     ).map { (input, expected) ->
-        DynamicTest.dynamicTest("Reverses a linked list ${input.printRest()}") {
+        DynamicTest.dynamicTest("Reverses a linked list ${input.print()}") {
             val output = ReverseLinkedList.reverse(input)
             assertEquals(expected, output)
         }
