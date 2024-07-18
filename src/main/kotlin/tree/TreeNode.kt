@@ -1,27 +1,27 @@
 package org.kata.tree
 
-data class TreeNode(val value: Int, var left: TreeNode? = null, var right: TreeNode? = null) {
+data class TreeNode<T>(val value: T, var left: TreeNode<T>? = null, var right: TreeNode<T>? = null) {
     companion object {
-        private fun printSubTree(node: TreeNode?): String {
+        private fun <T> printSubTree(node: TreeNode<T>?): String {
             if (node == null) return ""
             return printSubTree(node.left) +
                     "${if (node.left != null) "/" else ""}${node.value}${if (node.right != null) "\\" else ""}" +
                     printSubTree(node.right)
         }
 
-        fun inOrderTraversal(
-            node: TreeNode?
-        ): Iterable<Int> {
-            val list = mutableListOf<Int>()
+        fun <T> inOrderTraversal(
+            node: TreeNode<T>?
+        ): Iterable<T> {
+            val list = mutableListOf<T>()
 
             inOrderTraversalRecursive(node, list)
 
             return list
         }
 
-        private fun inOrderTraversalRecursive(
-            node: TreeNode?,
-            list: MutableList<Int>
+        private fun <T> inOrderTraversalRecursive(
+            node: TreeNode<T>?,
+            list: MutableList<T>
         ) {
             if (node == null) return
 

@@ -1,18 +1,18 @@
 package org.kata.tree
 
 object KthSmallestBST {
-    fun get(root: TreeNode?, k: Int): Int {
-        if (root == null) return -1
+    fun <T> get(root: TreeNode<T>?, k: Int): T? {
+        if (root == null) return null
 
         val (found, _) = inOrderTraversalKthElement(root, k)
 
-        return found?.value ?: -1
+        return found?.value
     }
 
-    private fun inOrderTraversalKthElement(
-        node: TreeNode?,
+    private fun <T> inOrderTraversalKthElement(
+        node: TreeNode<T>?,
         k: Int
-    ): Pair<TreeNode?, Int> {
+    ): Pair<TreeNode<T>?, Int> {
         if (node == null) return Pair(null, k)
 
         val (found, newK) = inOrderTraversalKthElement(node.left, k)

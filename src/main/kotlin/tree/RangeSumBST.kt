@@ -1,10 +1,10 @@
 package org.kata.tree
 
-class RangeSumBST(private val root: TreeNode?, private val low: Int, private val high: Int) {
+class RangeSumBST(private val root: TreeNode<Int>?, private val low: Int, private val high: Int) {
     fun getRangeSum(): Int = inOrderTraversalSum(root)
 
     private fun inOrderTraversalSum(
-        node: TreeNode?
+        node: TreeNode<Int>?
     ): Int {
         if (node == null) return 0
 
