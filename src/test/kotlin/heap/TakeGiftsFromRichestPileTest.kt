@@ -7,7 +7,7 @@ import org.kata.heap.TakeGiftsFromRichestPile
 
 class TakeGiftsFromRichestPileTest {
     @TestFactory
-    fun countOneUps() = listOf(
+    fun remainingGifts() = listOf(
         Pair(listOf(4, 9, 16), 2) to 11,
         Pair(listOf(1, 2, 3), 1) to 4,
         Pair(listOf(25, 36, 49), 3) to 18,
