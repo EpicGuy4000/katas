@@ -8,7 +8,8 @@ object SortCharactersByFrequency {
             string.forEach { put(it, getOrDefault(it, 0) + 1) }
         }
 
-        return PriorityQueue(string.length,
+        return PriorityQueue(
+            string.length,
             Comparator<Char> { o1, o2 -> counter[o1]!!.compareTo(counter[o2]!!) }.reversed()
         )
             .apply {
